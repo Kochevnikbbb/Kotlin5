@@ -1,4 +1,4 @@
-package com.example.kotlin5.ui
+package com.example.kotlin5.ui.playlist
 
 import android.content.Context
 import android.view.LayoutInflater

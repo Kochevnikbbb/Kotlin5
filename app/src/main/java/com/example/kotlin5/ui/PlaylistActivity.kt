@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlin5.base.BaseActivity
 import com.example.kotlin5.databinding.ActivityPlaylistBinding
+import com.example.kotlin5.ui.playlist.PlaylistsViewModel
 
 class PlaylistActivity : BaseActivity<PlaylistsViewModel, ActivityPlaylistBinding>() {
 

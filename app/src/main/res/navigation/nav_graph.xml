@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/playlistFragment"
-        android:name="com.example.kotlin5.ui.PlaylistFragment"
+        android:name="com.example.kotlin5.ui.playlist.PlaylistFragment"
         android:label="fragment_playlist"
         tools:layout="@layout/fragment_playlist">
         <action

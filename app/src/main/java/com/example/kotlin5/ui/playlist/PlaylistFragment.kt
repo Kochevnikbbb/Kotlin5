@@ -1,4 +1,4 @@
-package com.example.kotlin5.ui
+package com.example.kotlin5.ui.playlist
 
 import android.view.LayoutInflater
 import android.view.View
@@ -43,8 +43,11 @@ class PlaylistFragment : BaseNavFragment<FragmentPlaylistBinding, BaseViewModel>
 
     override fun clickOnItem(any: Any) {
         if (any is Item) {
-            navigate(PlaylistFragmentDirections
-                .actionPlaylistFragmentToVideoFragment(any.id))
+            navigate(
+                PlaylistFragmentDirections.actionPlaylistFragmentToVideoFragment(
+                    any.id
+                )
+            )
         }
     }
 }
