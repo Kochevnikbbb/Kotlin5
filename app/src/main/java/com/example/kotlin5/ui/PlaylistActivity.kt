@@ -13,14 +13,6 @@ class PlaylistActivity : BaseActivity<PlaylistsViewModel, ActivityPlaylistBindin
         ViewModelProvider(this)[PlaylistsViewModel::class.java]
     }
 
-    override fun initViewModel() {
-        super.initViewModel()
-
-        viewModel.getPlaylists().observe(this) {
-            Toast.makeText(this,it.kind, Toast.LENGTH_SHORT).show()
-        }
-    }
-
     override fun inflateViewBinding(inflater: LayoutInflater): ActivityPlaylistBinding {
         return ActivityPlaylistBinding.inflate(inflater)
     }

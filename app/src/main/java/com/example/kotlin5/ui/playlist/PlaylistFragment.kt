@@ -14,8 +14,7 @@ import com.example.kotlin5.databinding.FragmentPlaylistBinding
 import com.example.kotlin5.interfaces.SomethingClicked
 import com.example.kotlin5.model.Item
 
-class PlaylistFragment : BaseNavFragment<FragmentPlaylistBinding, BaseViewModel>(),
-    SomethingClicked {
+class PlaylistFragment : BaseNavFragment<FragmentPlaylistBinding, BaseViewModel>() {
 
     private val adapter = PlaylistAdapter(this::clickOnItem)
     private lateinit var checkNet: ConnectionLiveData
@@ -25,13 +24,14 @@ class PlaylistFragment : BaseNavFragment<FragmentPlaylistBinding, BaseViewModel>
     }
 
     override fun initView() {
+        getNavigation()
         binding.rec.adapter = adapter
-        binding.rec.layoutManager = LinearLayoutManager(context)
+        binding.rec.layoutManager = LinearLayoutManager(requireContext())
     }
 
     override fun initViewModel() {
         viewModel.getPlaylists().observe(this) {
-           // Toast.makeText(this, it.kind.toString(), Toast.LENGTH_SHORT).show()
+            // Toast.makeText(this, it.kind.toString(), Toast.LENGTH_SHORT).show()
             adapter.setList(it.items as ArrayList<Item>)
         }
     }
@@ -55,13 +55,11 @@ class PlaylistFragment : BaseNavFragment<FragmentPlaylistBinding, BaseViewModel>
         }
     }
 
-    override fun clickOnItem(any: Any) {
-        if (any is Item) {
-            navigate(
-                PlaylistFragmentDirections.actionPlaylistFragmentToVideoFragment(
-                    any.id
-                )
+    private fun clickOnItem(id: String) {
+        navigate(
+            PlaylistFragmentDirections.actionPlaylistFragmentToVideoFragment(
+                id
             )
-        }
+        )
     }
 }

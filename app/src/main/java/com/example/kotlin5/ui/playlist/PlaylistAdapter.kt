@@ -51,7 +51,7 @@ class PlaylistAdapter(
                 binding.tvCountOfVideos.text = it
             }
             binding.root.setOnClickListener {
-                playlist.id.let { it1 -> onItemClick(it1) }
+                onItemClick(playlist.id)
             }
         }
     }
