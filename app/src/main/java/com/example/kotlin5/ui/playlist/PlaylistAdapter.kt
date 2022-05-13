@@ -1,44 +1,58 @@
 package com.example.kotlin5.ui.playlist
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlin5.R
 import com.example.kotlin5.databinding.ItemBinding
-import com.example.kotlin5.extensions.chooseTheMostQualityImage
-import com.example.kotlin5.extensions.glideSetter
-import com.example.kotlin5.interfaces.SomethingClicked
+import com.example.kotlin5.extensions.loadWithGlide
 import com.example.kotlin5.model.Item
 
 
-class PlaylistAdapter(private var list: List<Item>, private var onItemClick: SomethingClicked,
-                      private val context: Context) : RecyclerView.Adapter<PlaylistAdapter.PlaylistsHolder>() {
+class PlaylistAdapter(
+    private val onItemClick: (id: String) -> Unit
+) : RecyclerView.Adapter<PlaylistAdapter.ListViewHolder>() {
 
+    private var list = arrayListOf<Item>()
 
-    class PlaylistsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val binding = ItemBinding.bind(itemView)
-        fun bind(i: Item, context: Context) = with(binding) {
-            val uri = context.chooseTheMostQualityImage(i)
-            context.glideSetter(uri, ivPlaylists)
-            tvPlaylistTitle.text = i.snippet.title
-            val itemCount = i.contentDetails.itemCount.toString()
-            tvCountOfVideos.text = context.getString(R.string.videos, itemCount)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
+        return ListViewHolder(
+            ItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+    }
+
+    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
+        holder.onBind(list[position])
+    }
+
+    override fun getItemCount(): Int {
+        return list.size
+    }
+
+    fun setList(list: ArrayList<Item>) {
+        this.list = list
+        notifyDataSetChanged()
+    }
+
+    inner class ListViewHolder(private val binding: ItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun onBind(playlist: Item) {
+            playlist.snippet.thumbnails.medium.url.let {
+                binding.ivPlaylists.loadWithGlide(
+                    it
+                )
+            }
+            binding.tvPlaylistTitle.text = playlist.snippet.title.toString()
+            (playlist.contentDetails.itemCount.toString() + " video series").also {
+                binding.tvCountOfVideos.text = it
+            }
+            binding.root.setOnClickListener {
+                playlist.id.let { it1 -> onItemClick(it1) }
+            }
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-        return PlaylistsHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: PlaylistsHolder, position: Int) {
-        holder.bind(list[position], context)
-        holder.itemView.setOnClickListener{
-            onItemClick.clickOnItem(list[position])
-        }
-    }
-
-    override fun getItemCount(): Int = list.size
 }

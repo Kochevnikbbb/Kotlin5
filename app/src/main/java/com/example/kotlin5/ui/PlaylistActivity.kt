@@ -16,7 +16,7 @@ class PlaylistActivity : BaseActivity<PlaylistsViewModel, ActivityPlaylistBindin
     override fun initViewModel() {
         super.initViewModel()
 
-        viewModel.playlists().observe(this) {
+        viewModel.getPlaylists().observe(this) {
             Toast.makeText(this,it.kind, Toast.LENGTH_SHORT).show()
         }
     }

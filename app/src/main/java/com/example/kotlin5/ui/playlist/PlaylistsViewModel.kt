@@ -19,14 +19,14 @@ class PlaylistsViewModel : BaseViewModel() {
         RetrofitClient.create()
     }
 
-    fun playlists(): LiveData<Playlist> {
-        return getPlaylists()
+    fun getPlaylists(): LiveData<Playlist> {
+        return playlists()
     }
 
-    private fun getPlaylists(): LiveData<Playlist> {
+    private fun playlists(): LiveData<Playlist> {
         val data = MutableLiveData<Playlist>()
 
-        apiService.getPlaylists(Constant.part, Constant.channelId, API_KEY, Constant.maxResult)
+        apiService.getPlaylists(Constant.part, Constant.channelId, API_KEY)
             .enqueue(object : Callback<Playlist> {
                 override fun onResponse(call: Call<Playlist>, response: Response<Playlist>) {
                     if (response.isSuccessful) {

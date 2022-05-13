@@ -5,10 +5,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.playlist.PlaylistFragment">
 
+    <include
+        android:id="@+id/included"
+        layout="@layout/internet_collapsed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         tools:listitem="@layout/item" />
 
 </FrameLayout>

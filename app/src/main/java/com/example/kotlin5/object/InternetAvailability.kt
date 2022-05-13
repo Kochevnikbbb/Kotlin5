@@ -1,17 +1,17 @@
 package com.example.kotlin5.`object`
 
+import java.io.IOException
 import java.net.InetSocketAddress
-import java.net.Socket
+import javax.net.SocketFactory
 
 object InternetAvailability {
-    fun check() : Boolean {
+    fun check(socketFactory: SocketFactory) : Boolean {
         return try {
-            val socket = Socket()
-            socket.connect(InetSocketAddress("8.8.8.8", 53))
+            val socket = socketFactory.createSocket() ?: throw IOException("Socket is null.")
+            socket.connect(InetSocketAddress("8.8.8.8", 53), 1500)
             socket.close()
             true
-        } catch (e: Exception){
-            e.printStackTrace()
+        } catch (e: IOException) {
             false
         }
     }
