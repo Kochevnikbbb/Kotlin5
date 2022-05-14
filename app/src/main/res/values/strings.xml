@@ -5,5 +5,9 @@
     <string name="try_again">Try again</string>
     <string name="playlist_title">Playlist</string>
     <string name="videos">%1$s video series</string>
+    <string name="playlist">Playlist</string>
+    <string name="back">Back</string>
+    <string name="exampletext"><![CDATA[Emotional Well-being & Healing Practices for Children]]></string>
+    <string name="example2">In this series, we break down the impact of displacement, instability, violence, and trauma in children, and offer exercises to support children in their healing journey.</string>
 
 </resources>
