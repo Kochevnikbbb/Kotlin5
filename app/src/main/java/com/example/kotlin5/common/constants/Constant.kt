@@ -1,4 +1,4 @@
-package com.example.kotlin5.`object`
+package com.example.kotlin5.common.constants
 
 object Constant {
 

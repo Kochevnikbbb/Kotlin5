@@ -1,6 +1,7 @@
-package com.example.kotlin5.remote
+package com.example.kotlin5.data.remote
 
 import com.example.kotlin5.BuildConfig.BASE_URL
+import com.example.kotlin5.data.remote.apiservices.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,9 +18,9 @@ class RetrofitClient {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
             val okHttpClient = OkHttpClient.Builder()
-                .writeTimeout(20,TimeUnit.SECONDS)
-                .readTimeout(20,TimeUnit.SECONDS)
-                .connectTimeout(20,TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .build()
 
@@ -33,5 +34,4 @@ class RetrofitClient {
 
         }
     }
-
 }

@@ -1,24 +1,24 @@
 package com.example.kotlin5.ui.playlist
 
+import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.kotlin5.base.BaseNavFragment
-import com.example.kotlin5.base.BaseViewModel
-import com.example.kotlin5.checkInternet.ConnectionLiveData
+import com.example.kotlin5.R
+import com.example.kotlin5.common.constants.Constant
+import com.example.kotlin5.core.network.status.Status
 import com.example.kotlin5.databinding.FragmentPlaylistBinding
-import com.example.kotlin5.interfaces.SomethingClicked
-import com.example.kotlin5.model.Item
+import com.example.kotlin5.ui.base.BaseNavFragment
+import com.example.kotlin5.ui.base.BaseViewModel
+import com.example.youtube40.core.utils.ConnectivityStatus
+import com.example.kotlin5.data.remote.dto.Item
 
 class PlaylistFragment : BaseNavFragment<FragmentPlaylistBinding, BaseViewModel>() {
 
     private val adapter = PlaylistAdapter(this::clickOnItem)
-    private lateinit var checkNet: ConnectionLiveData
-
     override val viewModel: PlaylistsViewModel by lazy {
         ViewModelProvider(this)[PlaylistsViewModel::class.java]
     }
@@ -29,10 +29,31 @@ class PlaylistFragment : BaseNavFragment<FragmentPlaylistBinding, BaseViewModel>
         binding.rec.layoutManager = LinearLayoutManager(requireContext())
     }
 
+    /* private fun onItemClick() {
+         val bundle = Bundle()
+         bundle.putString("sdgasdgsd", Constant.putId)
+         findNavController().navigate(R.id.videoFragment, bundle)
+     }*/
+
     override fun initViewModel() {
         viewModel.getPlaylists().observe(this) {
-            // Toast.makeText(this, it.kind.toString(), Toast.LENGTH_SHORT).show()
-            adapter.setList(it.items as ArrayList<Item>)
+            when (it.status) {
+                Status.SUCCESS -> {
+                    adapter.setList(it.data?.items as ArrayList<Item>)
+                    binding.progressBar.isVisible = false
+                }
+                Status.ERROR -> {}
+                Status.LOADING -> {
+                    binding.progressBar.isVisible = true
+                }
+            }
+        }
+
+    }
+
+    override fun initListener() {
+        binding.included.btnTrySwitchOnInternet.setOnClickListener {
+            checkInternet()
         }
     }
 
@@ -42,13 +63,17 @@ class PlaylistFragment : BaseNavFragment<FragmentPlaylistBinding, BaseViewModel>
     }
 
     override fun checkInternet() {
-        checkNet = ConnectionLiveData(requireContext())
+
+        val checkNet = ConnectivityStatus(requireContext())
         checkNet.observe(this) {
+            binding.progressBar.isVisible = true
             if (it) {
-                initViewModel()
+                binding.progressBar.isVisible = false
                 binding.rec.isVisible = true
                 binding.included.root.isInvisible = true
+                initViewModel()
             } else {
+                binding.progressBar.isVisible = false
                 binding.rec.isInvisible = true
                 binding.included.root.isVisible = true
             }
@@ -56,10 +81,8 @@ class PlaylistFragment : BaseNavFragment<FragmentPlaylistBinding, BaseViewModel>
     }
 
     private fun clickOnItem(id: String) {
-        navigate(
-            PlaylistFragmentDirections.actionPlaylistFragmentToVideoFragment(
-                id
-            )
-        )
+        val bundle = Bundle()
+        bundle.putString(Constant.putId, id)
+        findNavController().navigate(R.id.videoFragment, bundle)
     }
 }

@@ -1,16 +1,16 @@
-package com.example.kotlin5.base
+package com.example.kotlin5.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseActivity<VM: BaseViewModel,VB: ViewBinding> : AppCompatActivity() {
+abstract class BaseActivity<VM : BaseViewModel, Binding : ViewBinding> : AppCompatActivity() {
 
-    protected lateinit var binding: VB
+    lateinit var binding: Binding
     protected abstract val viewModel: VM
 
-    protected abstract fun inflateViewBinding(inflater: LayoutInflater): VB
+    protected abstract fun inflateViewBinding(inflater: LayoutInflater): Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +18,6 @@ abstract class BaseActivity<VM: BaseViewModel,VB: ViewBinding> : AppCompatActivi
         setContentView(binding.root)
 
         checkInternet()
-        initViewModel()
         initView()
         initListener()
 

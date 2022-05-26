@@ -1,4 +1,4 @@
-package com.example.kotlin5.extensions
+package com.example.kotlin5.common.extensions
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback

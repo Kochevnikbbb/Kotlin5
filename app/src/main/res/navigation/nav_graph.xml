@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/videoFragment"
-        android:name="com.example.kotlin5.ui.VideoFragment"
+        android:name="com.example.kotlin5.ui.video.VideoFragment"
         android:label="fragment_video"
         tools:layout="@layout/fragment_video">
         <argument

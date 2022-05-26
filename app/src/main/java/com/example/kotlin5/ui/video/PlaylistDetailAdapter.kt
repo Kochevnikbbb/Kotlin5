@@ -1,22 +1,21 @@
-package com.example.kotlin5.ui.playlist
+package com.example.kotlin5.ui.video
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin5.common.extensions.loadWithGlide
-import com.example.kotlin5.databinding.ItemBinding
 import com.example.kotlin5.data.remote.dto.Item
+import com.example.kotlin5.databinding.Item2Binding
 
-
-class PlaylistAdapter(
+class PlaylistDetailAdapter(
     private val onItemClick: (id: String) -> Unit
-) : RecyclerView.Adapter<PlaylistAdapter.ListViewHolder>() {
+) : RecyclerView.Adapter<PlaylistDetailAdapter.ListViewHolder>() {
 
     private var list = arrayListOf<Item>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         return ListViewHolder(
-            ItemBinding.inflate(
+            Item2Binding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -37,24 +36,15 @@ class PlaylistAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ListViewHolder(private val binding: ItemBinding) :
+    inner class ListViewHolder(private val binding: Item2Binding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(playlist: Item) {
-            playlist.snippet?.thumbnails?.medium?.url?.let {
-                binding.ivPlaylists.loadWithGlide(
-                    it
-                )
+            binding.apply {
+                tvPlaylistTitle.text = playlist.snippet?.title.toString()
+                playlist.snippet?.thumbnails?.medium?.url?.let { ivPlaylists.loadWithGlide(it) }
+                tvCountOfVideos.text = playlist.kind.toString()
             }
-            binding.tvPlaylistTitle.text = playlist.snippet?.title.toString()
-            (playlist.contentDetails?.itemCount.toString() + " video series").also {
-                binding.tvCountOfVideos.text = it
-            }
-            binding.root.setOnClickListener {
-                playlist.id?.let { it1 -> onItemClick(it1) }
-            }
-
-
         }
     }
 }
